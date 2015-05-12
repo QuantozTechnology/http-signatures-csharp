@@ -8,11 +8,12 @@ using System.Text;
 
 namespace HttpSignatures
 {
+    public class InvalidSignatureException : Exception
+    {
+        public InvalidSignatureException(string message)
+            : base(message)
+        {
 
-	public class InvalidSignatureException : Exception {
-		public InvalidSignatureException(string message) : base(message) {
-
-		}
-	}
-	
+        }
+    }
 }

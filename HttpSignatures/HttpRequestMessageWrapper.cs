@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace HttpSignatures
 {
-    public class HttpRequestMessageWrapper: IRequest
+    public class HttpRequestMessageWrapper : IRequest
     {
         private readonly HttpRequestMessage _r;
 
@@ -13,17 +13,22 @@ namespace HttpSignatures
             _r = r;
         }
 
-        public HttpMethod Method {
+        public HttpMethod Method
+        {
             get { return _r.Method; }
         }
+
         public string Body { get; private set; }
+
         public string GetHeader(string header)
         {
             var h = _r.Headers.GetValues(header).ToArray();
+
             if (h.Count() > 1)
             {
                 throw new NotImplementedException("Signing request with duplicate headers is not implemented.");
             }
+
             return h.FirstOrDefault();
         }
 

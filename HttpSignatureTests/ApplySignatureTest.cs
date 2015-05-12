@@ -26,7 +26,7 @@ namespace HttpSignatureTests
             var spec = new SignatureSpecification()
             {
                 Algorithm = "hmac-sha256",
-                Headers = new string[] {"host", "(request-target)"},
+                Headers = new string[] { "host", "(request-target)" },
                 KeyId = Fixture.KeyId
             };
             signer.Sign(request, spec, Fixture.KeyId, Fixture.KeyBase64);

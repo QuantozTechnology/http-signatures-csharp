@@ -2,7 +2,7 @@
 
 namespace HttpSignatures
 {
-    public class SignatureVerificationModule: IHttpModule
+    public class SignatureVerificationModule : IHttpModule
     {
         private readonly ISignatureAuthenticator _authenticator;
 
@@ -19,6 +19,7 @@ namespace HttpSignatures
         void context_BeginRequest(object sender, System.EventArgs e)
         {
             var context = HttpContext.Current;
+
             if (!_authenticator.IsExempt(context.Request))
             {
                 var verifiedSignature = _authenticator.Authenticate(context.Request, context.Response);

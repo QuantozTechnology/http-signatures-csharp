@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HttpSignatures
 {
-    class HttpSignatureConfiguration
-    {
-    }
+    //class HttpSignatureConfiguration
+    //{
+    //}
 }

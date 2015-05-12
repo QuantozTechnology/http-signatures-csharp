@@ -16,6 +16,7 @@ namespace HttpSignatures
         public HttpMethod Method { get; set; }
         public Dictionary<string, string> Headers { get; private set; }
         public string Body { get; set; }
+
         public string GetHeader(string header)
         {
             return Headers[header];
@@ -35,11 +36,13 @@ namespace HttpSignatures
                 Method = new HttpMethod(r.HttpMethod),
                 Path = r.RawUrl
             };
+
             foreach (var h in r.Headers.AllKeys)
             {
                 var headerVal = r.Headers[h];
                 req.Headers.Add(h.ToLowerInvariant(), headerVal);
             }
+
             return req;
         }
     }

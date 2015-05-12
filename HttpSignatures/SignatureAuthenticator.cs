@@ -7,6 +7,7 @@ namespace HttpSignatures
     public interface ISignatureAuthenticator
     {
         bool IsExempt(HttpRequest request);
+
         VerifiedSignature Authenticate(HttpRequest request, HttpResponse response);
     }
 
@@ -20,7 +21,7 @@ namespace HttpSignatures
         {
             _signatureSpec = signatureSpec;
             _keyStore = keyStore;
-            _log = LogManager.GetCurrentClassLogger();
+            _log = LogManager.GetLogger(typeof(SignatureAuthenticator));
         }
 
         public virtual bool IsExempt(HttpRequest request)
@@ -41,11 +42,12 @@ namespace HttpSignatures
         public virtual VerifiedSignature Authenticate(HttpRequest request, HttpResponse response)
         {
             VerifiedSignature verifiedSignature = null;
+
             try
             {
-                verifiedSignature = HttpSignature.VerifiedSignature(HttpContext.Current.Request, _signatureSpec,
-                    _keyStore);
-                if (verifiedSignature !=null && verifiedSignature.Valid)
+                verifiedSignature = HttpSignature.VerifiedSignature(HttpContext.Current.Request, _signatureSpec, _keyStore);
+
+                if (verifiedSignature != null && verifiedSignature.Valid)
                 {
                     this.OnAuthenticateSuccess(verifiedSignature);
                 }
@@ -67,15 +69,16 @@ namespace HttpSignatures
                 HttpContext.Current.Response.End();
                 this.OnAuthenticateFailure(verifiedSignature);
             }
+
             return verifiedSignature;
         }
     }
 
     public static class SignatureSpecificationExtensions
     {
-	    public static string WwwAuthenticateChallenge(this ISignatureSpecification spec)
-	    {
-	        return string.Format("Signature realm=\"{0}\",headers=\"{1}\"", spec.Realm, string.Join(" ", spec.Headers));
-	    }
+        public static string WwwAuthenticateChallenge(this ISignatureSpecification spec)
+        {
+            return string.Format("Signature realm=\"{0}\",headers=\"{1}\"", spec.Realm, string.Join(" ", spec.Headers));
+        }
     }
 }
