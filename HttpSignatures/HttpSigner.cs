@@ -2,7 +2,6 @@ using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
-using System.Web;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.IO;
@@ -13,7 +12,6 @@ namespace HttpSignatures
     public interface IHttpSigner
     {
         VerifiedSignature Signature(IRequest r, ISignatureSpecification spec, IKeyStore keyStore);
-        VerifiedSignature Signature(HttpRequest r, ISignatureSpecification spec, IKeyStore keyStore);
     }
 
     public class HttpSigner : IHttpSigner
@@ -97,11 +95,6 @@ namespace HttpSignatures
                 spec.Algorithm,
                 string.Join(" ", spec.Headers),
                 signature);
-        }
-
-        public VerifiedSignature Signature(HttpRequest r, ISignatureSpecification spec, IKeyStore keyStore)
-        {
-            return Signature(Request.FromHttpRequest(r), spec, keyStore);
         }
     }
 

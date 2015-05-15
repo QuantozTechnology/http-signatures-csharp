@@ -9,9 +9,9 @@ namespace HttpSignatures
 
     public class KeyStore : IKeyStore
     {
-        readonly Dictionary<string, string> keys;
+        readonly IDictionary<string, string> keys;
 
-        public KeyStore(Dictionary<string, string> keys)
+        public KeyStore(IDictionary<string, string> keys)
         {
             this.keys = keys;
         }

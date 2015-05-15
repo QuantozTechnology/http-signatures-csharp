@@ -28,22 +28,5 @@ namespace HttpSignatures
         }
 
         public string Path { get; set; }
-
-        public static IRequest FromHttpRequest(HttpRequest r)
-        {
-            var req = new Request()
-            {
-                Method = new HttpMethod(r.HttpMethod),
-                Path = r.RawUrl
-            };
-
-            foreach (var h in r.Headers.AllKeys)
-            {
-                var headerVal = r.Headers[h];
-                req.Headers.Add(h.ToLowerInvariant(), headerVal);
-            }
-
-            return req;
-        }
     }
 }

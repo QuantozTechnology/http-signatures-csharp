@@ -26,6 +26,7 @@ namespace HttpSignatures
 
             if (h.Count() > 1)
             {
+                // TODO: allow duplicate headers
                 throw new NotImplementedException("Signing request with duplicate headers is not implemented.");
             }
 

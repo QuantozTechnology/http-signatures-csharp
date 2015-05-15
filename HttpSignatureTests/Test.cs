@@ -11,7 +11,7 @@ namespace HttpSignatureTests
 		[Test ()]
 		public void CanSignOutgoingRequest ()
 		{
-        
+		
 		}
 	}
 
