@@ -45,7 +45,8 @@ namespace AspNetSample.Controllers
             return Request.CreateResponse(signature);
         }
 
-        [HttpSignature("host", "(request-target)")]
+        //[HttpSignature("host", "(request-target)")]
+        [HttpSignatureAuthentication("host", "(request-target)")]
         public HttpResponseMessage Get()
         {
             return Request.CreateResponse("Succes!");

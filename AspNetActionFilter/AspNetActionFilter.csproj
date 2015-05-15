@@ -56,7 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddChallengeOnUnauthorizedResult.cs" />
+    <Compile Include="AuthenticationFailureResult.cs" />
     <Compile Include="HttpSignatureAttribute.cs" />
+    <Compile Include="HttpSignatureAuthenticationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
