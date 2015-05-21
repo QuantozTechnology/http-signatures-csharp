@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
 
 namespace HttpSignatures
 {
@@ -58,6 +59,9 @@ namespace HttpSignatures
         {
             var algorithm = spec.Algorithm;
             var signatureString = signatureStringExtractor.ExtractSignatureString(r, spec);
+
+            Trace.WriteLine("SignatureString: " + signatureString);
+
             var hmac = HMAC.Create(algorithm.Replace("-", "").ToUpper());
 
             hmac.Initialize();

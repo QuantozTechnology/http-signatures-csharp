@@ -1,6 +1,7 @@
 ﻿using HttpSignatures;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -49,6 +50,12 @@ namespace AspNetActionFilter
 
                 var signature = signer.Signature(sigRequest, spec, keyStore);
 
+                var signatureString = new HttpSignatureStringExtractor().ExtractSignatureString(sigRequest, spec);
+
+                Trace.WriteLine("Signature: " + signatureString);
+                Trace.WriteLine("Expected: " + signature.ExpectedSignature);
+                Trace.WriteLine("Received: " + request.Headers.Authorization.Parameter);
+
                 if (signature.Valid)
                 {
                     IPrincipal principal = new GenericPrincipal(new GenericIdentity(signature.KeyId), new[] { "PoolPartner" });
@@ -64,13 +71,9 @@ namespace AspNetActionFilter
                 }
                 else
                 {
-                    throw new Exception("signature invalid");
+                    authContext.ErrorResult = new AuthenticationFailureResult("Invalid signature", request);
                 }
             }
-            //else
-            //{
-            //    throw new Exception("missing authentication");
-            //}
 
             return Task.FromResult(0);
         }
