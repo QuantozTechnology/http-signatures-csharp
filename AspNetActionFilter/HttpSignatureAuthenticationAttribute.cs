@@ -67,10 +67,10 @@ namespace AspNetActionFilter
                     throw new Exception("signature invalid");
                 }
             }
-            else
-            {
-                throw new Exception("missing authentication");
-            }
+            //else
+            //{
+            //    throw new Exception("missing authentication");
+            //}
 
             return Task.FromResult(0);
         }
