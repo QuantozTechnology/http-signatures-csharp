@@ -24,6 +24,11 @@ namespace AspNetActionFilter
                 req.Headers.Add(h.Key.ToLowerInvariant(), h.Value.First());
             }
 
+            foreach (var h in r.Content.Headers)
+            {
+                req.Headers.Add(h.Key.ToLowerInvariant(), h.Value.First());
+            }
+
             return req;
         }
     }
