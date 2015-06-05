@@ -11,6 +11,20 @@ using System.Web.Http.Filters;
 
 namespace AspNetActionFilter
 {
+    public class KeyStoreAuthenticationItem
+    {
+        public string KeyId { get; set; }
+
+        public string Secret { get; set; }
+
+        public string[] Roles { get; set; }
+    }
+
+    public interface IKeyStoreAuthenticationService
+    {
+        IDictionary<string, KeyStoreAuthenticationItem> GetKeyStore();
+    }
+
     [AttributeUsage(AttributeTargets.Method)]
     public class HttpSignatureAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
@@ -25,9 +39,9 @@ namespace AspNetActionFilter
         {
             var context = authContext.ActionContext;
 
-            var keyService = (IKeyStoreService)context
+            var keyService = (IKeyStoreAuthenticationService)context
                           .ControllerContext.Configuration.DependencyResolver
-                          .GetService(typeof(IKeyStoreService));
+                          .GetService(typeof(IKeyStoreAuthenticationService));
 
             var keys = keyService.GetKeyStore();
 
@@ -46,7 +60,9 @@ namespace AspNetActionFilter
 
                 var sigRequest = WebApiRequestConverter.FromHttpRequest(request);
 
-                var keyStore = new KeyStore(keys);
+                var store = keys.ToDictionary(t => t.Key, t => t.Value.Secret);
+
+                var keyStore = new KeyStore(store);
 
                 var signature = signer.Signature(sigRequest, spec, keyStore);
 
@@ -58,7 +74,9 @@ namespace AspNetActionFilter
 
                 if (signature.Valid)
                 {
-                    IPrincipal principal = new GenericPrincipal(new GenericIdentity(signature.KeyId), new[] { "PoolPartner" });
+                    var roles = keys[signature.KeyId].Roles;
+
+                    IPrincipal principal = new GenericPrincipal(new GenericIdentity(signature.KeyId), roles);
 
                     if (principal == null)
                     {
