@@ -13,6 +13,13 @@ namespace AspNetActionFilter
 {
     public class KeyStoreAuthenticationItem
     {
+        public KeyStoreAuthenticationItem(string keyId, string secret, string[] roles)
+        {
+            this.KeyId = keyId;
+            this.Secret = secret;
+            this.Roles = roles;
+        }
+
         public string KeyId { get; set; }
 
         public string Secret { get; set; }
